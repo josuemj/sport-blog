@@ -1,0 +1,22 @@
+{
+  "name": "sport-blog",
+  "version": "1.0.0",
+  "description": "sport api blog",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/josuemj/sport-blog.git"
+  },
+  "author": "josuemj",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/josuemj/sport-blog/issues"
+  },
+  "homepage": "https://github.com/josuemj/sport-blog#readme",
+  "dependencies": {
+    "express": "^4.18.3"
+  }
+}
