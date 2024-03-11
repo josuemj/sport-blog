@@ -1,5 +1,5 @@
 import express from 'express'
-import { getAllPosts, createPost } from './db.js';
+import { getAllPosts, createPost, getPostById} from './db.js';
 
 const app = express()
 app.use(express.json());
@@ -38,6 +38,21 @@ app.post('/posts', async (req, res) => {
     }
 });
 
+app.get('/posts/:postId', async (req, res) => {
+    const { postId } = req.params;
+    
+    try {
+        const post = await getPostById(postId);
+        if (post) {
+            res.json(post);
+        } else {
+            res.status(404).send({ error: "Post not found" });
+        }
+    } catch (error) {
+        console.error("Error fetching post:", error);
+        res.status(500).send({ error: "Internal server error" });
+    }
+});
 
 const port = 5000
 

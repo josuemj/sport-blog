@@ -10,4 +10,11 @@ export async function createPost({ title, content, video }) {
       'INSERT INTO blog_posts (title, content, video) VALUES (?, ?, ?)',
       [title, content, video]
     );
+
+    
+}
+
+export async function getPostById(postId) {
+    const [rows] = await conn.query('SELECT * FROM blog_posts WHERE id = ?', [postId]);
+    return rows[0];
 }
