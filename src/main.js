@@ -1,5 +1,5 @@
 import express from 'express'
-import { getAllPosts, createPost, getPostById} from './db.js';
+import { getAllPosts, createPost, getPostById, updatePost} from './db.js';
 
 const app = express()
 app.use(express.json());
@@ -51,6 +51,30 @@ app.get('/posts/:postId', async (req, res) => {
     } catch (error) {
         console.error("Error fetching post:", error);
         res.status(500).send({ error: "Internal server error" });
+    }
+});
+
+app.put('/posts/:postId', async (req, res) => {
+    const { postId } = req.params;
+    const { title, content, video } = req.body; // Assuming these are the fields you allow to update
+
+    if (!title && !content && !video) {
+        return res.status(400).send({ error: 'At least one field is required for an update.' });
+    }
+
+    try {
+        // Assuming you have a function to update the post in your database handling module
+        // This function should return the updated post
+        const updatedPost = await updatePost(postId, { title, content, video });
+        
+        if (!updatedPost) {
+            return res.status(404).send({ error: 'Post not found.' });
+        }
+
+        res.status(200).json(updatedPost);
+    } catch (error) {
+        console.error('Error updating post:', error);
+        res.status(500).send({ error: 'An error occurred while updating the post.' });
     }
 });
 
