@@ -1,5 +1,5 @@
 import express from 'express'
-import { getAllPosts, createPost, getPostById, updatePost} from './db.js';
+import { getAllPosts, createPost, getPostById, updatePost, deletePost} from './db.js';
 
 const app = express()
 app.use(express.json());
@@ -56,15 +56,13 @@ app.get('/posts/:postId', async (req, res) => {
 
 app.put('/posts/:postId', async (req, res) => {
     const { postId } = req.params;
-    const { title, content, video } = req.body; // Assuming these are the fields you allow to update
+    const { title, content, video } = req.body;
 
     if (!title && !content && !video) {
         return res.status(400).send({ error: 'At least one field is required for an update.' });
     }
 
     try {
-        // Assuming you have a function to update the post in your database handling module
-        // This function should return the updated post
         const updatedPost = await updatePost(postId, { title, content, video });
         
         if (!updatedPost) {
@@ -75,6 +73,21 @@ app.put('/posts/:postId', async (req, res) => {
     } catch (error) {
         console.error('Error updating post:', error);
         res.status(500).send({ error: 'An error occurred while updating the post.' });
+    }
+});
+
+app.delete('/posts/:postId', async (req, res) => {
+    const { postId } = req.params;
+
+    try {
+        const result = await deletePost(postId);
+        if (result.affectedRows === 0) {
+            return res.status(404).send({ error: 'Post not found.' });
+        }
+        res.status(204).end();
+    } catch (error) {
+        console.error('Error deleting post:', error);
+        res.status(500).send({ error: 'An error occurred while deleting the post.' });
     }
 });
 
