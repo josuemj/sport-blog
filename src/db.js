@@ -42,11 +42,7 @@ export async function updatePost(postId, updates) {
 
 export async function deletePost(postId) {
     const deleteQuery = 'DELETE FROM blog_posts WHERE id = ?';
-
-    try {
-        const [result] = await conn.query(deleteQuery, [postId]);
-        return result;
-    } catch (error) {
-        throw error;
-    }
+    const [result] = await conn.query(deleteQuery, [postId]);
+    return result;
+    
 }
