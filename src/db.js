@@ -6,8 +6,8 @@ export async function getAllPosts() {
 }
 
 export async function createPost({ title, content, video }) {
-    const result = await conn.query(
-      'INSERT INTO blog_posts (title, c ontent, video) VALUES (?, ?, ?)',
+    await conn.query(
+      'INSERT INTO blog_posts (title, content, video) VALUES (?, ?, ?)',
       [title, content, video]
     );
 }
