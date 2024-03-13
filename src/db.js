@@ -31,16 +31,13 @@ export async function updatePost(postId, updates) {
     const updateQuery = `UPDATE blog_posts SET ${fields} WHERE id = ?;`;
     const selectQuery = `SELECT * FROM blog_posts WHERE id = ?;`;
 
-    try {
-        // Execute the update query
-        await conn.query(updateQuery, [...values, postId]);
+    // Execute the update query
+    await conn.query(updateQuery, [...values, postId]);
 
-        // Fetch the updated post to return it
-        const [updatedRows] = await conn.query(selectQuery, [postId]);
-        return updatedRows.length ? updatedRows[0] : null;
-    } catch (error) {
-        throw error;
-    }
+    // Fetch the updated post to return it
+    const [updatedRows] = await conn.query(selectQuery, [postId]);
+    return updatedRows.length ? updatedRows[0] : null;
+    
 }
 
 export async function deletePost(postId) {
