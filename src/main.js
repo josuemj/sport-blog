@@ -1,11 +1,13 @@
 import express from 'express'
 import { getAllPosts, createPost, getPostById, updatePost, deletePost} from './db.js';
+import cors from 'cors'
 
 const app = express()
+app.use(cors())
 app.use(express.json());
 
 
-app.get('/', async (req, res) => {
+app.get('/hello', async (req, res) => {
   res.send('HELLO FROM MY SERVER')
 })
 
