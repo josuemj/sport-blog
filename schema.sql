@@ -11,3 +11,8 @@ CREATE DATABASE IF NOT EXISTS blog_sport_db;
         video VARCHAR(900),
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
+
+    CREATE TABLE IF NOT EXISTS sport_users (
+        username VARCHAR(255) NOT NULL,
+        passwrod VARCHAR(255) NOT NULL
+    );
