@@ -93,7 +93,7 @@ app.delete('/posts/:postId', async (req, res) => {
     }
 });
 
-const port = 5000
+const port = 22397
 
 app.listen(port, () => {
   console.log(`Server listening at http://127.0.0.1:${port}`)
