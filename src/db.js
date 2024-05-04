@@ -1,4 +1,6 @@
 import conn from './conn.js'
+import bcrypt from 'bcrypt';
+
 
 export async function getAllPosts() {
  const [rows] = await conn.query('SELECT * FROM blog_posts')
@@ -46,3 +48,34 @@ export async function deletePost(postId) {
     return result;
     
 }
+
+export async function register(username, password) {
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    const [rows] = await conn.query('INSERT INTO sport_users (username, password) VALUES (?, ?)', [username, hashedPassword]);
+    return rows;
+  }
+
+export async function getAllUsers() {
+    const [rows] = await conn.query('SELECT username, password FROM sport_users');
+    return rows;
+}
+
+//login stuff
+async function getPasswordByUsername(username) {
+    const [rows] = await conn.query('SELECT password FROM sport_users WHERE username = ?', [username]);
+    if (rows.length === 0) {
+      return null; // User not found
+    }
+    return rows[0].password; // Return the hashed password
+}
+
+export async function login(username, password) {
+    const hashedPassword = await getPasswordByUsername(username);
+    if (!hashedPassword) {
+      return false; // User not found
+    }
+    // Compare the hashed password with the provided password
+    const passwordMatch = await bcrypt.compare(password, hashedPassword);
+    return passwordMatch; // Return true if passwords match, false otherwise
+  }

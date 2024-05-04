@@ -1,5 +1,7 @@
 import express from 'express'
-import { getAllPosts, createPost, getPostById, updatePost, deletePost} from './db.js';
+import 
+{ getAllPosts, createPost, getPostById, updatePost, deletePost, register,getAllUsers,login} 
+    from './db.js';
 import cors from 'cors'
 
 const app = express()
@@ -92,6 +94,51 @@ app.delete('/posts/:postId', async (req, res) => {
         res.status(500).send({ error: 'An error occurred while deleting the post.' });
     }
 });
+
+
+//Login and regist stuff
+
+//register
+app.post('/register', async (req, res) => {
+    console.log("body", req.body);
+    const { username, password } = req.body;
+  
+    try {
+      await register(username, password);
+      res.json({ "message": "user created" });
+    } catch (error) {
+      console.error('Error registering user:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
+
+//checking users
+app.get('/users', async (req, res) => {
+try {
+    const users = await getAllUsers();
+    res.json(users);
+} catch (error) {
+    console.error('Error fetching users:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+}
+});
+
+// Login endpoint
+app.post('/login', async (req, res) => {
+    const { username, password } = req.body;
+  
+    try {
+      const isAuthenticated = await login(username, password);
+      if (isAuthenticated) {
+        res.json({ message: 'Login successful' });
+      } else {
+        res.status(401).json({ error: 'Invalid username or password' });
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
 
 const port = 22397
 

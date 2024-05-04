@@ -14,5 +14,5 @@ CREATE DATABASE IF NOT EXISTS blog_sport_db;
 
     CREATE TABLE IF NOT EXISTS sport_users (
         username VARCHAR(255) NOT NULL,
-        passwrod VARCHAR(255) NOT NULL
+        password VARCHAR(255) NOT NULL
     );
